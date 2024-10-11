@@ -1,0 +1,24 @@
+<div class="flex w-full flex-col h-full">
+  <div class="p-3 bg-gray-100">
+    <div class="container mx-auto">
+      <h3 class="text-2xl">dcupl ng starter - Catalog Example</h3>
+    </div>
+  </div>
+  <div class="flex h-full container mx-auto pt-8">
+    @if (loading) {
+    <div class="w-full flex justify-center items-center">
+      <h4 class="text-xl">Loading Data</h4>
+    </div>
+    } @else {
+    <div class="w-[300px] flex flex-shrink-0 mr-5 pr-5 border-r border-gray-100">
+      <app-filter-bar [list]="list"></app-filter-bar>
+    </div>
+    <div class="w-full h-full overflow-x-hidden">
+      <app-product-table
+        [list]="list"
+        [visibleColumns]="visibleColumns"
+      ></app-product-table>
+    </div>
+    }
+  </div>
+</div>
