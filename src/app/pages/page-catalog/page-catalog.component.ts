@@ -5,12 +5,10 @@ import { FilterBarComponent } from '../../components/filter-bar/filter-bar.compo
 import { DcuplList } from '@dcupl/core';
 
 @Component({
-  selector: 'app-page-catalog',
-  templateUrl: './page-catalog.component.html',
-  styleUrls: ['./page-catalog.component.css'],
-  standalone: true,
-
-  imports: [ProductTableComponent, FilterBarComponent],
+    selector: 'app-page-catalog',
+    templateUrl: './page-catalog.component.html',
+    styleUrls: ['./page-catalog.component.css'],
+    imports: [ProductTableComponent, FilterBarComponent]
 })
 export class PageCatalogComponent implements OnInit {
   public loading = true;

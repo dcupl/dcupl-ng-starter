@@ -12,11 +12,10 @@ export type FilterDefinition = {
 };
 
 @Component({
-  selector: 'app-filter-bar',
-  templateUrl: './filter-bar.component.html',
-  styleUrls: ['./filter-bar.component.css'],
-  standalone: true,
-  imports: [TextFilterComponent, CheckboxFilterComponent],
+    selector: 'app-filter-bar',
+    templateUrl: './filter-bar.component.html',
+    styleUrls: ['./filter-bar.component.css'],
+    imports: [TextFilterComponent, CheckboxFilterComponent]
 })
 export class FilterBarComponent implements OnInit {
   @Input({ required: true }) list!: DcuplList;
