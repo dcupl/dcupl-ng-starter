@@ -18,12 +18,12 @@
       <table class="w-max min-w-full border-separate border-spacing-0 text-base">
         <thead>
           <tr>
-            @for (column of visibleColumns(); track $index) {
+            @for (column of columns; track column.label) {
               <th
                 scope="col"
                 class="border-b border-black-200 px-3 py-2.5 text-left text-xs font-normal tracking-wide whitespace-nowrap text-black-600 first:pl-4 last:pr-10 sm:first:pl-6"
               >
-                {{ column }}
+                {{ column.label }}
               </th>
             }
           </tr>
@@ -31,10 +31,10 @@
         <tbody class="tabular-nums">
           @for (item of data(); track item.key) {
             <tr class="odd:bg-black-100">
-              @for (column of visibleColumns(); track $index) {
+              @for (column of columns; track column.label) {
                 <!-- from sm up, long values wrap at 300px like the console's fixed table cells -->
                 <td class="px-3 py-2 align-top first:pl-4 last:pr-10 sm:first:pl-6">
-                  <div class="whitespace-nowrap sm:max-w-[300px] sm:whitespace-normal">{{ getCellValue(item, column) }}</div>
+                  <div class="whitespace-nowrap sm:max-w-[300px] sm:whitespace-normal">{{ column.value(item) ?? '—' }}</div>
                 </td>
               }
             </tr>

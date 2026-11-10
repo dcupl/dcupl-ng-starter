@@ -19,7 +19,8 @@ const articles = Array.from({ length: 25 }, (_, index) => {
     color,
     price: n,
     inStock: n * 10,
-    vendorId: n % 2 ? 'v1' : 'v2',
+    // the last article has no vendor
+    vendorId: n === 25 ? undefined : n % 2 ? 'v1' : 'v2',
   };
 });
 
@@ -130,6 +131,22 @@ describe('PageCatalogComponent with a real dcupl instance', () => {
     expect(pageLabel()).toBe('Page 1 of 3');
     expect(button('Previous').disabled).toBe(true);
     expect(button('Next').disabled).toBe(false);
+  });
+
+  it('shows the chosen columns, with the vendor resolved to its contact and company', async () => {
+    const { element, rows } = await render();
+
+    const headers = Array.from(element.querySelectorAll('thead th')).map((th) => th.textContent?.trim());
+    expect(headers).toEqual(['Key', 'Product name', 'Vendor', 'Category', 'Price', 'In stock', 'Color']);
+    expect(rows()[0]).toEqual(['a1', 'Ball (Pro)', 'John Doe (SportWorld)', 'Balls', '1', '10', 'Red']);
+  });
+
+  it('a row without a vendor shows "—" in the vendor column', async () => {
+    const { searchProductName, rows } = await render();
+
+    await searchProductName('shirt 25');
+
+    expect(rows()).toEqual([['a25', 'Shirt 25', '—', 'Shirts', '25', '250', 'Green']]);
   });
 
   it('next and previous move one page', async () => {

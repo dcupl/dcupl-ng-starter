@@ -15,7 +15,6 @@ export class PageCatalogComponent implements OnInit {
   private destroyed = false;
 
   public readonly list = signal<DcuplList | undefined>(undefined);
-  public readonly visibleColumns = signal<string[]>([]);
   public readonly error = signal<string | undefined>(undefined);
 
   constructor() {
@@ -37,11 +36,7 @@ export class PageCatalogComponent implements OnInit {
       if (this.destroyed) {
         return;
       }
-      const list = dcupl.lists.create({ modelKey: 'Article' });
-      const meta = list.catalog.fn.metadata();
-
-      this.visibleColumns.set(['key', ...meta.attributes.map((attr) => attr.key)]);
-      this.list.set(list);
+      this.list.set(dcupl.lists.create({ modelKey: 'Article' }));
     } catch (err) {
       this.error.set(err instanceof Error ? err.message : String(err));
     }

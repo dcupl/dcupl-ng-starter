@@ -24,11 +24,7 @@
   } @else if (list(); as catalogList) {
     <div class="grid items-start gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8">
       <app-filter-bar [list]="catalogList"></app-filter-bar>
-      <app-product-table
-        class="min-w-0"
-        [list]="catalogList"
-        [visibleColumns]="visibleColumns()"
-      ></app-product-table>
+      <app-product-table class="min-w-0" [list]="catalogList"></app-product-table>
     </div>
   } @else {
     <div
