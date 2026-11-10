@@ -10,7 +10,7 @@
   @if (data().length) {
     <!-- the right edge fades out, so columns that continue off-card read as "scroll for more" -->
     <div
-      class="overflow-x-auto [mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)]"
+      class="overflow-x-auto [mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)] focus-visible:outline-offset-[-2px]! focus-visible:[mask-image:none]"
       role="region"
       aria-labelledby="results-title"
       tabindex="0"
