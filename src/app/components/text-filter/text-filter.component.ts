@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { FilterDefinition } from '../filter-bar/filter-bar.component';
 import { escapeRegExp } from '@dcupl/common';
@@ -7,6 +12,7 @@ import { escapeRegExp } from '@dcupl/common';
   selector: 'app-text-filter',
   templateUrl: './text-filter.component.html',
   styleUrls: ['./text-filter.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class TextFilterComponent implements OnInit {
@@ -34,7 +40,7 @@ export class TextFilterComponent implements OnInit {
               transform: ['lowercase'],
             },
           },
-          { mode: 'set' }
+          { mode: 'set' },
         );
         console.timeEnd('apply query');
       }

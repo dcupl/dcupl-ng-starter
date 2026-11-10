@@ -1,4 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ListItem, ListMetadata } from '@dcupl/common';
 import { DcuplList } from '@dcupl/core';
 
@@ -6,6 +11,7 @@ import { DcuplList } from '@dcupl/core';
   selector: 'app-product-table',
   templateUrl: './product-table.component.html',
   styleUrls: ['./product-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ProductTableComponent implements OnInit {
@@ -30,7 +36,7 @@ export class ProductTableComponent implements OnInit {
         count: 10,
         projection: { $: true, vendorId: { $: true } },
       },
-      { skipProcessing: true }
+      { skipProcessing: true },
     );
   }
 

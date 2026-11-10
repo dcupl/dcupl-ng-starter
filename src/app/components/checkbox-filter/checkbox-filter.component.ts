@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { FilterDefinition } from '../filter-bar/filter-bar.component';
 import { DcuplFacet } from '@dcupl/common';
@@ -7,6 +12,7 @@ import { DcuplFacet } from '@dcupl/common';
   selector: 'app-checkbox-filter',
   templateUrl: './checkbox-filter.component.html',
   styleUrls: ['./checkbox-filter.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class CheckboxFilterComponent implements OnInit {
@@ -50,7 +56,7 @@ export class CheckboxFilterComponent implements OnInit {
           operator: 'eq',
           value: item.value,
         },
-        { mode: 'add' }
+        { mode: 'add' },
       );
     }
   }

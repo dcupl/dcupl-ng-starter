@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DcuplService } from '../../services/dcupl.service';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { FilterBarComponent } from '../../components/filter-bar/filter-bar.component';
 import { DcuplList } from '@dcupl/core';
 
 @Component({
-    selector: 'app-page-catalog',
-    templateUrl: './page-catalog.component.html',
-    styleUrls: ['./page-catalog.component.css'],
-    imports: [ProductTableComponent, FilterBarComponent]
+  selector: 'app-page-catalog',
+  templateUrl: './page-catalog.component.html',
+  styleUrls: ['./page-catalog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [ProductTableComponent, FilterBarComponent],
 })
 export class PageCatalogComponent implements OnInit {
   public loading = true;

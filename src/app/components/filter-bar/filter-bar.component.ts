@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { TextFilterComponent } from '../text-filter/text-filter.component';
 import { CheckboxFilterComponent } from '../checkbox-filter/checkbox-filter.component';
@@ -12,10 +17,11 @@ export type FilterDefinition = {
 };
 
 @Component({
-    selector: 'app-filter-bar',
-    templateUrl: './filter-bar.component.html',
-    styleUrls: ['./filter-bar.component.css'],
-    imports: [TextFilterComponent, CheckboxFilterComponent]
+  selector: 'app-filter-bar',
+  templateUrl: './filter-bar.component.html',
+  styleUrls: ['./filter-bar.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [TextFilterComponent, CheckboxFilterComponent],
 })
 export class FilterBarComponent implements OnInit {
   @Input({ required: true }) list!: DcuplList;
