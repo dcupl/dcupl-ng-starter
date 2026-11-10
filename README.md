@@ -25,7 +25,7 @@ To load data from the dcupl CDN, open the `dcupl.service.ts` file. You’ll find
 
 The screen uses the look of the dcupl console, built with Tailwind CSS only:
 
-* `src/styles.css` holds the console palette as Tailwind theme tokens prefixed `dcu-`, next to Tailwind's default palette (`dcu-black-*` is an alpha scale with `-50` as solid black, plus `dcu-white-50` and the status colours `dcu-blue-*`, `dcu-yellow-*`, `dcu-green-*`, `dcu-red-*`), the focus ring and five small classes named like their console counterparts (`dcu-button`, `dcu-button-black`, `dcu-button-outline`, `dcu-button-clear`, `dcu-tag`).
+* `src/styles.css` holds the console palette as Tailwind theme tokens prefixed `dcu-`, next to Tailwind's default palette (`dcu-black-*` is an alpha scale with `-50` as solid black, plus `dcu-white-50` and the status colours `dcu-blue-*`, `dcu-yellow-*`, `dcu-green-*`, `dcu-red-*`), the focus ring and a few small classes named like their console counterparts: `dcu-panel` (the card), `dcu-panel-header` (its tinted header strip), `dcu-scroll-x` (the horizontally scrolling table region), `dcu-button`, `dcu-button-black`, `dcu-button-outline`, `dcu-button-clear` and `dcu-tag`.
 * The font is [Inter](https://rsms.me/inter/), self-hosted from the `@fontsource-variable/inter` package, as an open-source stand-in for the console font.
 * Everything else is Tailwind utilities in the component templates.
 

@@ -1,20 +1,14 @@
-<section aria-labelledby="results-title" class="overflow-hidden rounded-xl border border-dcu-black-200">
-  <div class="flex h-14 items-center justify-between gap-3 bg-dcu-black-100 px-4 sm:px-6">
-    <h2 id="results-title" class="text-xs tracking-[0.12em] text-dcu-black-700 uppercase">Articles</h2>
-    <p class="text-xs text-dcu-black-700 tabular-nums" aria-live="polite">
+<section aria-labelledby="results-title" class="dcu-panel">
+  <div class="dcu-panel-header justify-between">
+    <h2 id="results-title" class="tracking-[0.12em] uppercase">Articles</h2>
+    <p class="tabular-nums" aria-live="polite">
       <span class="font-semibold text-dcu-black-50">{{ meta()?.currentSize }}</span>
       / {{ meta()?.initialSize }} results
     </p>
   </div>
 
   @if (data().length) {
-    <!-- the right edge fades out, so columns that continue off-card read as "scroll for more" -->
-    <div
-      class="overflow-x-auto [mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)] focus-visible:outline-offset-[-2px]! focus-visible:[mask-image:none]"
-      role="region"
-      aria-labelledby="results-title"
-      tabindex="0"
-    >
+    <div class="dcu-scroll-x" role="region" aria-labelledby="results-title" tabindex="0">
       <table class="w-max min-w-full border-separate border-spacing-0 text-base">
         <thead>
           <tr>
