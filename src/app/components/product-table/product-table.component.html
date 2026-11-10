@@ -8,14 +8,20 @@
   </div>
 
   @if (data().length) {
-    <div class="overflow-x-auto" role="region" aria-labelledby="results-title" tabindex="0">
+    <!-- the right edge fades out, so columns that continue off-card read as "scroll for more" -->
+    <div
+      class="overflow-x-auto [mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)]"
+      role="region"
+      aria-labelledby="results-title"
+      tabindex="0"
+    >
       <table class="w-max min-w-full border-separate border-spacing-0 text-base">
         <thead>
           <tr>
             @for (column of visibleColumns(); track $index) {
               <th
                 scope="col"
-                class="border-b border-black-200 px-3 py-2.5 text-left text-xs font-normal tracking-wide whitespace-nowrap text-black-600 first:pl-4 last:pr-4 sm:first:pl-6 sm:last:pr-6"
+                class="border-b border-black-200 px-3 py-2.5 text-left text-xs font-normal tracking-wide whitespace-nowrap text-black-600 first:pl-4 last:pr-10 sm:first:pl-6"
               >
                 {{ column }}
               </th>
@@ -26,9 +32,9 @@
           @for (item of data(); track item.key) {
             <tr class="odd:bg-black-100">
               @for (column of visibleColumns(); track $index) {
-                <!-- long values wrap at 300px, like the console's fixed table cells -->
-                <td class="px-3 py-2 align-top first:pl-4 last:pr-4 sm:first:pl-6 sm:last:pr-6">
-                  <div class="max-w-[300px]">{{ getCellValue(item, column) }}</div>
+                <!-- from sm up, long values wrap at 300px like the console's fixed table cells -->
+                <td class="px-3 py-2 align-top first:pl-4 last:pr-10 sm:first:pl-6">
+                  <div class="whitespace-nowrap sm:max-w-[300px] sm:whitespace-normal">{{ getCellValue(item, column) }}</div>
                 </td>
               }
             </tr>
