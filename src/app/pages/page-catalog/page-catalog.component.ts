@@ -1,39 +1,27 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { DcuplList } from '@dcupl/core';
 import { DcuplService } from '../../services/dcupl.service';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { FilterBarComponent } from '../../components/filter-bar/filter-bar.component';
-import { DcuplList } from '@dcupl/core';
 
 @Component({
   selector: 'app-page-catalog',
   templateUrl: './page-catalog.component.html',
   styleUrls: ['./page-catalog.component.css'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ProductTableComponent, FilterBarComponent],
 })
 export class PageCatalogComponent implements OnInit {
-  public loading = true;
-  public list!: DcuplList;
+  private readonly dcuplService = inject(DcuplService);
 
-  public visibleColumns: string[] = [];
-  constructor(public dcuplService: DcuplService) {}
+  public readonly list = signal<DcuplList | undefined>(undefined);
+  public readonly visibleColumns = signal<string[]>([]);
 
-  ngOnInit(): void {
-    this.init();
-  }
+  async ngOnInit(): Promise<void> {
+    const dcupl = await this.dcuplService.init();
+    const list = dcupl.lists.create({ modelKey: 'Article' });
+    const meta = list.catalog.fn.metadata();
 
-  private async init() {
-    await this.dcuplService.init();
-
-    this.list = this.dcuplService.dcupl.lists.create({
-      modelKey: 'Article',
-    });
-
-    const meta = await this.list.catalog.fn.metadata();
-
-    this.visibleColumns = meta.attributes.map((attr) => attr.key);
-    this.visibleColumns.unshift('key');
-
-    this.loading = false;
+    this.visibleColumns.set(['key', ...meta.attributes.map((attr) => attr.key)]);
+    this.list.set(list);
   }
 }

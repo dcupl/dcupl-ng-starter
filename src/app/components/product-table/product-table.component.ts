@@ -1,100 +1,70 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, input, signal } from '@angular/core';
 import { ListItem, ListMetadata } from '@dcupl/common';
 import { DcuplList } from '@dcupl/core';
+
+const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-product-table',
   templateUrl: './product-table.component.html',
   styleUrls: ['./product-table.component.css'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: true,
 })
 export class ProductTableComponent implements OnInit {
-  @Input({ required: true }) list!: DcuplList;
-  @Input({ required: true }) visibleColumns!: string[];
+  public readonly list = input.required<DcuplList>();
+  public readonly visibleColumns = input.required<string[]>();
 
-  public data: ListItem[] = [];
-  public meta: ListMetadata | undefined;
+  public readonly data = signal<ListItem[]>([]);
+  public readonly meta = signal<ListMetadata | undefined>(undefined);
 
-  constructor() {}
+  private readonly start = computed(() => this.meta()?.appliedQuery?.start ?? 0);
+  private readonly count = computed(() => this.meta()?.appliedQuery?.count ?? PAGE_SIZE);
+  public readonly previousDisabled = computed(() => this.start() <= 0);
+  public readonly nextDisabled = computed(
+    () => this.start() + this.count() >= (this.meta()?.currentSize ?? 0),
+  );
 
-  ngOnInit() {
-    this.setInitialQueryOptions();
+  private readonly destroyRef = inject(DestroyRef);
+
+  ngOnInit(): void {
+    this.resetPaging();
     this.queryData();
-    this.listenOnListUpdates();
+    const unsubscribe = this.list().onResultChange(() => {
+      this.queryData();
+      // the next filter change starts again at the first page
+      this.resetPaging();
+    });
+    this.destroyRef.onDestroy(unsubscribe);
   }
 
-  private setInitialQueryOptions() {
-    this.list.catalog.query.applyOptions(
-      {
-        start: 0,
-        count: 10,
-        projection: { $: true, vendorId: { $: true } },
-      },
+  private resetPaging(): void {
+    this.list().catalog.query.applyOptions(
+      { start: 0, count: PAGE_SIZE, projection: { $: true, vendorId: { $: true } } },
       { skipProcessing: true },
     );
   }
 
-  private listenOnListUpdates() {
-    this.list.on((msg) => {
-      if (msg.action === 'update') {
-        this.queryData();
-        this.setInitialQueryOptions();
-      }
-    });
+  private queryData(): void {
+    this.data.set(this.list().catalog.query.items());
+    this.meta.set(this.list().catalog.fn.metadata());
   }
 
-  public queryData() {
-    this.data = this.list.catalog.query.execute();
-    this.meta = this.list.catalog.fn.metadata();
-  }
-
-  public getCellValue(item: ListItem, column: string) {
+  public getCellValue(item: ListItem, column: string): unknown {
     const value = item[column];
-
     if (column === 'key') {
       return item.key;
     } else if (column === 'vendorId') {
       return `${value.contactName} (${value.companyName})`;
     } else if (typeof value === 'object') {
       return JSON.stringify(item);
-    } else {
-      return value;
     }
+    return value;
   }
 
-  public next() {
-    const currentStart = this.meta?.appliedQuery?.start || 0;
-    const currentCount = this.meta?.appliedQuery?.count || 10;
-
-    this.list.catalog.query.applyOptions({
-      start: currentStart + currentCount,
-    });
+  public next(): void {
+    this.list().catalog.query.applyOptions({ start: this.start() + this.count() });
   }
 
-  public previous() {
-    const currentStart = this.meta?.appliedQuery?.start || 0;
-    const currentCount = this.meta?.appliedQuery?.count || 10;
-
-    this.list.catalog.query.applyOptions({
-      start: currentStart - currentCount,
-    });
-  }
-
-  public isPreviousButtonDisabled() {
-    const currentStart = this.meta?.appliedQuery?.start || 0;
-    return currentStart <= 0;
-  }
-
-  public isNextButtonDisabled() {
-    const currentStart = this.meta?.appliedQuery?.start || 0;
-    const currentCount = this.meta?.appliedQuery?.count || 10;
-    const currentSize = this.meta?.currentSize || 0;
-    return currentStart + currentCount >= currentSize;
+  public previous(): void {
+    this.list().catalog.query.applyOptions({ start: this.start() - this.count() });
   }
 }

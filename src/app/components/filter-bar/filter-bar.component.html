@@ -3,10 +3,10 @@
   <div>
     <h3 class="text-base font-semibold">{{ definition.label }}</h3>
     @if(definition.type ==='text') {
-    <app-text-filter [list]="list" [definition]="definition"></app-text-filter>
+    <app-text-filter [list]="list()" [definition]="definition"></app-text-filter>
     } @else if(definition.type === 'checkbox') {
     <app-checkbox-filter
-      [list]="list"
+      [list]="list()"
       [definition]="definition"
     ></app-checkbox-filter>
     }

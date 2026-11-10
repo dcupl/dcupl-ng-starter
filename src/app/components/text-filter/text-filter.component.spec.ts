@@ -4,7 +4,7 @@ import { TextFilterComponent } from './text-filter.component';
 
 describe('TextFilterComponent', () => {
   function setup() {
-    const query = { apply: vi.fn(), remove: vi.fn() };
+    const query = { setCondition: vi.fn(), removeGroup: vi.fn() };
     const list = { catalog: { query } } as unknown as DcuplList;
     const fixture = TestBed.createComponent(TextFilterComponent);
     fixture.componentRef.setInput('list', list);
@@ -22,15 +22,12 @@ describe('TextFilterComponent', () => {
 
     component.applyQuery('Ball (Pro)');
 
-    expect(query.apply).toHaveBeenCalledWith(
-      {
-        attribute: 'productName',
-        operator: 'find',
-        value: '/ball \\(pro\\)/',
-        options: { transform: ['lowercase'] },
-      },
-      { mode: 'set' },
-    );
+    expect(query.setCondition).toHaveBeenCalledWith({
+      attribute: 'productName',
+      operator: 'find',
+      value: '/ball \\(pro\\)/',
+      options: { transform: ['lowercase'] },
+    });
   });
 
   it('removes the attribute group when the input is cleared', () => {
@@ -38,7 +35,7 @@ describe('TextFilterComponent', () => {
 
     component.applyQuery('');
 
-    expect(query.remove).toHaveBeenCalledWith({ groupKey: 'productName' });
-    expect(query.apply).not.toHaveBeenCalled();
+    expect(query.removeGroup).toHaveBeenCalledWith('productName');
+    expect(query.setCondition).not.toHaveBeenCalled();
   });
 });

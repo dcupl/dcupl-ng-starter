@@ -3,12 +3,12 @@
 >
   <fieldset>
     <legend class="text-base font-semibold leading-6 text-gray-900">
-      {{ definition.label }} ({{ facets.length }})
+      {{ definition().label }} ({{ facets().length }})
     </legend>
     <div
       class="mt-4 divide-y divide-gray-200 border-b border-t border-gray-200"
     >
-      @for (facet of facets; track $index) {
+      @for (facet of facets(); track $index) {
       <div class="relative flex items-start py-3">
         <div class="min-w-0 flex-1 text-sm leading-6">
           <label for="person-1" class="select-none font-medium text-gray-900">

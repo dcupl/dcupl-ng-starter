@@ -17,7 +17,7 @@
         <table class="min-w-full divide-y divide-gray-300">
           <thead>
             <tr>
-              @for (column of visibleColumns; track $index) {
+              @for (column of visibleColumns(); track $index) {
               <th
                 scope="col"
                 class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -28,9 +28,9 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            @for (item of data; track $index) {
+            @for (item of data(); track $index) {
             <tr>
-              @for (column of visibleColumns; track $index) {
+              @for (column of visibleColumns(); track $index) {
               <td
                 class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0"
               >
@@ -52,7 +52,7 @@
   <div class="hidden sm:block">
     <p class="text-sm text-gray-700">
       <span class="font-medium"
-        >{{ meta?.currentSize }} / {{ meta?.initialSize }}</span
+        >{{ meta()?.currentSize }} / {{ meta()?.initialSize }}</span
       >
       results
     </p>
@@ -60,14 +60,14 @@
   <div class="flex flex-1 justify-between sm:justify-end">
     <button
       (click)="previous()"
-      [disabled]="isPreviousButtonDisabled()"
+      [disabled]="previousDisabled()"
       class="relative inline-flex items-center disabled:opacity-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
     >
       Previous
     </button>
     <button
       (click)="next()"
-      [disabled]="isNextButtonDisabled()"
+      [disabled]="nextDisabled()"
       class="relative ml-3 inline-flex items-center disabled:opacity-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
     >
       Next

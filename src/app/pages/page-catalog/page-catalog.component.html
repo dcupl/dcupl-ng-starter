@@ -5,19 +5,19 @@
     </div>
   </div>
   <div class="flex h-full container mx-auto pt-8">
-    @if (loading) {
-    <div class="w-full flex justify-center items-center">
-      <h4 class="text-xl">Loading Data</h4>
-    </div>
-    } @else {
+    @if (list(); as list) {
     <div class="w-[300px] flex flex-shrink-0 mr-5 pr-5 border-r border-gray-100">
       <app-filter-bar [list]="list"></app-filter-bar>
     </div>
     <div class="w-full h-full overflow-x-hidden">
       <app-product-table
         [list]="list"
-        [visibleColumns]="visibleColumns"
+        [visibleColumns]="visibleColumns()"
       ></app-product-table>
+    </div>
+    } @else {
+    <div class="w-full flex justify-center items-center">
+      <h4 class="text-xl">Loading Data</h4>
     </div>
     }
   </div>

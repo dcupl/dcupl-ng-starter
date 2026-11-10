@@ -1,63 +1,45 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, input, signal } from '@angular/core';
 import { DcuplList } from '@dcupl/core';
-import { FilterDefinition } from '../filter-bar/filter-bar.component';
 import { DcuplFacet } from '@dcupl/common';
+import { FilterDefinition } from '../filter-bar/filter-bar.component';
 
 @Component({
   selector: 'app-checkbox-filter',
   templateUrl: './checkbox-filter.component.html',
   styleUrls: ['./checkbox-filter.component.css'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: true,
 })
 export class CheckboxFilterComponent implements OnInit {
-  @Input({ required: true }) list!: DcuplList;
-  @Input({ required: true }) definition!: FilterDefinition;
+  public readonly list = input.required<DcuplList>();
+  public readonly definition = input.required<FilterDefinition>();
 
-  public facets: DcuplFacet[] = [];
-  constructor() {}
+  public readonly facets = signal<DcuplFacet[]>([]);
+  private readonly destroyRef = inject(DestroyRef);
 
-  ngOnInit() {
-    this.listenOnListUpdates();
-    this.initFacets();
+  ngOnInit(): void {
+    this.loadFacets();
+    const unsubscribe = this.list().onResultChange(() => this.loadFacets());
+    this.destroyRef.onDestroy(unsubscribe);
   }
 
-  private listenOnListUpdates() {
-    this.list.on((msg) => {
-      if (msg.action === 'update') {
-        this.initFacets();
-      }
-    });
+  private loadFacets(): void {
+    this.facets.set(
+      this.list().catalog.fn.facets({
+        attribute: this.definition().attribute,
+        excludeZeros: false,
+      }),
+    );
   }
 
-  private initFacets() {
-    this.facets = this.list.catalog.fn.facets({
-      attribute: this.definition.attribute,
-      excludeZeros: false,
-    });
-  }
-
-  public toggle(item: DcuplFacet) {
+  public toggle(item: DcuplFacet): void {
+    const condition = {
+      attribute: this.definition().attribute,
+      operator: 'eq' as const,
+      value: item.value,
+    };
     if (item.selected) {
-      this.list!.catalog.query.remove({
-        attribute: this.definition.attribute,
-        operator: 'eq',
-        value: item.value,
-      });
+      this.list().catalog.query.removeCondition(condition);
     } else {
-      this.list!.catalog.query.apply(
-        {
-          attribute: this.definition.attribute,
-          operator: 'eq',
-          value: item.value,
-        },
-        { mode: 'add' },
-      );
+      this.list().catalog.query.addCondition(condition);
     }
   }
 }
