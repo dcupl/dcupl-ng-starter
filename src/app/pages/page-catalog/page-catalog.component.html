@@ -1,24 +1,35 @@
-<div class="flex w-full flex-col h-full">
-  <div class="p-3 bg-gray-100">
-    <div class="container mx-auto">
-      <h3 class="text-2xl">dcupl ng starter - Catalog Example</h3>
-    </div>
+<div class="mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-8 sm:py-10 xl:px-12">
+  <div class="mb-6 sm:mb-8">
+    <h1 class="text-xl font-semibold">Article Catalog</h1>
+    <p class="mt-1 text-sm text-dcu-black-600">
+      This starter loads data from a public dcupl starter project. Check it out at
+      <a
+        href="https://console.dcupl.com"
+        target="_blank"
+        rel="noopener"
+        class="border-b border-current text-dcu-black-50 transition-colors hover:text-dcu-blue-300"
+        >console.dcupl.com</a
+      >.
+    </p>
   </div>
-  <div class="flex h-full container mx-auto pt-8">
-    @if (loading) {
-    <div class="w-full flex justify-center items-center">
-      <h4 class="text-xl">Loading Data</h4>
+
+  @if (error(); as message) {
+    <div role="alert" class="max-w-xl rounded-xl border border-dcu-red-200 bg-dcu-red-100 p-5 sm:p-6">
+      <h2 class="text-base font-semibold">Could not load data</h2>
+      <p class="mt-1 text-sm break-words text-dcu-black-700">{{ message }}</p>
+      <button type="button" (click)="load()" class="dcu-button dcu-button-black mt-4">
+        Retry
+      </button>
     </div>
-    } @else {
-    <div class="w-[300px] flex flex-shrink-0 mr-5 pr-5 border-r border-gray-100">
-      <app-filter-bar [list]="list"></app-filter-bar>
+  } @else if (list(); as catalogList) {
+    <div class="grid items-start gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8">
+      <app-filter-bar [list]="catalogList"></app-filter-bar>
+      <app-product-table class="min-w-0" [list]="catalogList"></app-product-table>
     </div>
-    <div class="w-full h-full overflow-x-hidden">
-      <app-product-table
-        [list]="list"
-        [visibleColumns]="visibleColumns"
-      ></app-product-table>
+  } @else {
+    <div role="status" class="dcu-panel flex flex-col items-center justify-center gap-4 py-24">
+      <img src="dcupl-logo.svg" alt="" class="h-8 w-auto motion-safe:animate-spin" />
+      <p class="text-sm text-dcu-black-600">Loading data</p>
     </div>
-    }
-  </div>
+  }
 </div>

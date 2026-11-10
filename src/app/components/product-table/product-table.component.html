@@ -1,76 +1,78 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-base font-semibold leading-6 text-gray-900">Article Catalog</h1>
-      <p class="mt-2 text-sm text-gray-700">
-        This starter loads data from a public dcupl starter project. <br />
-        Check it out at
-        <a class="underline" target="_blank" href="https://console.dcupl.com"
-          >console.dcupl.com</a
-        >
-      </p>
-    </div>
-  </div>
-  <div class="mt-8 flow-root">
-    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead>
-            <tr>
-              @for (column of visibleColumns; track $index) {
-              <th
-                scope="col"
-                class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                {{ column }}
-              </th>
-              }
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            @for (item of data; track $index) {
-            <tr>
-              @for (column of visibleColumns; track $index) {
-              <td
-                class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0"
-              >
-                {{ getCellValue(item, column) }}
-              </td>
-              }
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-<nav
-  class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
-  aria-label="Pagination"
->
-  <div class="hidden sm:block">
-    <p class="text-sm text-gray-700">
-      <span class="font-medium"
-        >{{ meta?.currentSize }} / {{ meta?.initialSize }}</span
-      >
-      results
+<section aria-labelledby="results-title" class="dcu-panel">
+  <div class="dcu-panel-header justify-between">
+    <h2 id="results-title" class="tracking-[0.12em] uppercase">Articles</h2>
+    <p class="tabular-nums" aria-live="polite">
+      <span class="font-semibold text-dcu-black-50">{{ meta()?.currentSize }}</span>
+      / {{ meta()?.initialSize }} results
     </p>
   </div>
-  <div class="flex flex-1 justify-between sm:justify-end">
-    <button
-      (click)="previous()"
-      [disabled]="isPreviousButtonDisabled()"
-      class="relative inline-flex items-center disabled:opacity-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-    >
-      Previous
-    </button>
-    <button
-      (click)="next()"
-      [disabled]="isNextButtonDisabled()"
-      class="relative ml-3 inline-flex items-center disabled:opacity-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-    >
-      Next
-    </button>
-  </div>
-</nav>
+
+  @if (data().length) {
+    <div class="dcu-scroll-x" role="region" aria-labelledby="results-title" tabindex="0">
+      <table class="w-max min-w-full border-separate border-spacing-0 text-base">
+        <thead>
+          <tr>
+            @for (column of columns; track column.label) {
+              <th
+                scope="col"
+                class="border-b border-dcu-black-200 px-3 py-2.5 text-left text-xs font-normal tracking-wide whitespace-nowrap text-dcu-black-600 first:pl-4 last:pr-10 sm:first:pl-6"
+              >
+                {{ column.label }}
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody class="tabular-nums">
+          @for (item of data(); track item.key) {
+            <tr class="odd:bg-dcu-black-100">
+              @for (column of columns; track column.label) {
+                <!-- from sm up, long values wrap at 300px like the console's fixed table cells -->
+                <td class="px-3 py-2 align-top first:pl-4 last:pr-10 sm:first:pl-6">
+                  <div class="whitespace-nowrap sm:max-w-[300px] sm:whitespace-normal">{{ column.value(item) ?? '—' }}</div>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="px-6 py-16 text-center">
+      <p class="text-sm font-semibold">No articles match these filters</p>
+      <p class="mt-1 text-sm text-dcu-black-600">Change the product name or the color selection.</p>
+    </div>
+  }
+
+  <nav
+    aria-label="Pagination"
+    class="flex items-center justify-between gap-3 border-t border-dcu-black-200 px-4 py-3 sm:px-6"
+  >
+    <p class="text-sm text-dcu-black-600 tabular-nums">
+      Page <span class="font-semibold text-dcu-black-50">{{ page() }}</span> of {{ pageCount() }}
+    </p>
+    <div class="flex gap-2">
+      <button
+        type="button"
+        class="dcu-button dcu-button-outline pl-2"
+        (click)="previous()"
+        [disabled]="previousDisabled()"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true" class="size-4 fill-none stroke-current stroke-[1.5]">
+          <path d="M10 4 6 8l4 4" />
+        </svg>
+        Previous
+      </button>
+      <button
+        type="button"
+        class="dcu-button dcu-button-outline pr-2"
+        (click)="next()"
+        [disabled]="nextDisabled()"
+      >
+        Next
+        <svg viewBox="0 0 16 16" aria-hidden="true" class="size-4 fill-none stroke-current stroke-[1.5]">
+          <path d="m6 4 4 4-4 4" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</section>

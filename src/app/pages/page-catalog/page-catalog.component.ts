@@ -1,38 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { DcuplList } from '@dcupl/core';
 import { DcuplService } from '../../services/dcupl.service';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { FilterBarComponent } from '../../components/filter-bar/filter-bar.component';
-import { DcuplList } from '@dcupl/core';
+import { PAGE_SIZE } from '../../paging';
 
 @Component({
-    selector: 'app-page-catalog',
-    templateUrl: './page-catalog.component.html',
-    styleUrls: ['./page-catalog.component.css'],
-    imports: [ProductTableComponent, FilterBarComponent]
+  selector: 'app-page-catalog',
+  templateUrl: './page-catalog.component.html',
+  imports: [ProductTableComponent, FilterBarComponent],
 })
 export class PageCatalogComponent implements OnInit {
-  public loading = true;
-  public list!: DcuplList;
+  private readonly dcuplService = inject(DcuplService);
+  private destroyed = false;
 
-  public visibleColumns: string[] = [];
-  constructor(public dcuplService: DcuplService) {}
+  public readonly list = signal<DcuplList | undefined>(undefined);
+  public readonly error = signal<string | undefined>(undefined);
 
-  ngOnInit(): void {
-    this.init();
+  constructor() {
+    // a list lives until it is destroyed: free it when the page goes away
+    inject(DestroyRef).onDestroy(() => {
+      this.destroyed = true;
+      this.list()?.destroy();
+    });
   }
 
-  private async init() {
-    await this.dcuplService.init();
+  ngOnInit(): void {
+    void this.load();
+  }
 
-    this.list = this.dcuplService.dcupl.lists.create({
-      modelKey: 'Article',
-    });
-
-    const meta = await this.list.catalog.fn.metadata();
-
-    this.visibleColumns = meta.attributes.map((attr) => attr.key);
-    this.visibleColumns.unshift('key');
-
-    this.loading = false;
+  public async load(): Promise<void> {
+    this.error.set(undefined);
+    try {
+      const dcupl = await this.dcuplService.init();
+      if (this.destroyed) {
+        return;
+      }
+      const list = dcupl.lists.create({ modelKey: 'Article' });
+      list.catalog.query.applyOptions({
+        start: 0,
+        count: PAGE_SIZE,
+        // all article properties, plus the vendor reference resolved to its own properties
+        projection: { $: true, vendorId: { $: true } },
+      });
+      this.list.set(list);
+    } catch (err) {
+      this.error.set(err instanceof Error ? err.message : String(err));
+    }
   }
 }
