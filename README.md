@@ -12,7 +12,7 @@ To load data from the dcupl CDN, open the `dcupl.service.ts` file. You’ll find
 
 # Angular Readme Part
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.8.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) 18 and updated to Angular 22 (zoneless) with dcupl SDK 2.1.
 
 ## Development server
 
@@ -28,7 +28,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test` to execute the unit tests with [Vitest](https://vitest.dev) (`ng test --watch=false` for a single run).
 
 ## Running end-to-end tests
 
