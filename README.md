@@ -14,8 +14,20 @@ npm start
 
 Then open `http://localhost:4200/`. The Angular CLI ships with the project, so `npx ng <command>` (or the `npm run` scripts) works without a global install.
 
-## Loading Your Own Data
-To load data from the dcupl CDN, open the `dcupl.service.ts` file. You’ll find the **projectId** and **apiKey** fields there, which are used to configure and authenticate the data load process. Update these fields with your own project's **projectId** and **apiKey** once you've set up a new console project.
+## Commands
+
+* `npm start`: dev server at `http://localhost:4200/`, reloads on every change.
+* `npm test`: unit tests with [Vitest](https://vitest.dev) in watch mode; `npx ng test --watch=false` runs them once.
+* `npm run build`: production build into `dist/`.
+
+## Make it yours
+
+Point the starter at your own console project and model in four places:
+
+1. **Project:** `src/app/services/dcupl.service.ts`. Replace `projectId` and `apiKey` in `new Dcupl({ config })` with your project's values from the [dcupl Console](https://console.dcupl.com). `applicationKey: 'default'` picks the loader configuration to load.
+2. **Model:** `src/app/pages/page-catalog/page-catalog.component.ts`. Set `modelKey` in `dcupl.lists.create()` to your model. The `projection` right below resolves the `vendorId` reference for the table; name your own references there, or drop it. `PAGE_SIZE` sits at the top of the file.
+3. **Filters:** `filterDefinitions` in `src/app/components/filter-bar/filter-bar.component.ts`. One entry per filter: the `attribute`, a `label` and a `type`, either `'text'` (search within the attribute) or `'checkbox'` (one checkbox per value, with facet counts).
+4. **Columns:** `columns` in `src/app/components/product-table/product-table.component.ts`. Each column has a header `label` and a `value` accessor; a missing value renders "—". Adjust the `Article` type above the component to your item shape, and the empty-state text in `product-table.component.html` to your filters.
 
 * [dcupl Console](https://console.dcupl.com)
 * [dcupl Docs](https://docs.dcupl.com)
@@ -25,30 +37,9 @@ To load data from the dcupl CDN, open the `dcupl.service.ts` file. You’ll find
 
 The screen uses the look of the dcupl console, built with Tailwind CSS only:
 
-* `src/styles.css` holds the console palette as Tailwind theme tokens prefixed `dcu-`, next to Tailwind's default palette (`dcu-black-*` is an alpha scale with `-50` as solid black, plus `dcu-white-50` and the status colours `dcu-blue-*`, `dcu-yellow-*`, `dcu-green-*`, `dcu-red-*`), the focus ring and a few small classes named like their console counterparts: `dcu-panel` (the card), `dcu-panel-header` (its tinted header strip), `dcu-scroll-x` (the horizontally scrolling table region), `dcu-button`, `dcu-button-black`, `dcu-button-outline`, `dcu-button-clear` and `dcu-tag`.
+* `src/styles.css` holds:
+  * the console palette as Tailwind theme tokens prefixed `dcu-`, next to Tailwind's default palette: `dcu-black-*` is an alpha scale (`-50` is solid black, `-100` to `-700` run from 4 % to 80 %), `dcu-white-50` is white, and the console's status colours `dcu-blue-*`, `dcu-yellow-*`, `dcu-green-*` and `dcu-red-*` are there for your own UI;
+  * the focus ring;
+  * small classes named like their console counterparts: `dcu-panel` (the card), `dcu-panel-header` (its tinted header strip), `dcu-scroll-x` (the horizontally scrolling table region), `dcu-button`, `dcu-button-black`, `dcu-button-outline`, `dcu-button-clear` and `dcu-tag`.
 * The font is [Inter](https://rsms.me/inter/), self-hosted from the `@fontsource-variable/inter` package, as an open-source stand-in for the console font.
 * Everything else is Tailwind utilities in the component templates.
-
-# Angular Readme Part
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) 18 and updated to Angular 22 (zoneless) with dcupl SDK 2.1.
-
-## Development server
-
-Run `npm start` (or `npx ng serve`) for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `npx ng generate component component-name` to generate a new component. You can also use `npx ng generate directive|pipe|service|class|guard|interface|enum`.
-
-## Build
-
-Run `npm run build` (or `npx ng build`) to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `npm test` to execute the unit tests with [Vitest](https://vitest.dev) (`npx ng test --watch=false` for a single run).
-
-## Further help
-
-To get more help on the Angular CLI use `npx ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
