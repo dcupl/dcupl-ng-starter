@@ -6,7 +6,7 @@
     #searchInput
     [id]="'filter-' + definition().attribute"
     type="text"
-    class="h-9 min-w-0 flex-1 rounded border-black-500 bg-white-50 px-2.5 text-sm placeholder:text-black-600 hover:border-black-50 focus:border-black-50 focus:ring-0"
+    class="h-9 min-w-0 flex-1 rounded border-black-500 bg-white-50 px-2.5 text-base placeholder:text-black-600 hover:border-black-50 focus:border-black-50 focus:ring-0 sm:text-sm"
     placeholder="e.g.: Ball, Yoga, ..."
     (keyup.Enter)="applyQuery(searchInput.value)"
   />
