@@ -1,18 +1,16 @@
-<div class="w-full">
-  <div class="flex items-center space-x-3">
-    <input
-      type="text"
-      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-      placeholder="e.g.: Ball, Yoga, ..."
-      (keyup.Enter)="applyQuery(searchInput.value)"
-      #searchInput
-    />
-    <button
-      type="button"
-      class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      (click)="applyQuery(searchInput.value)"
-    >
-      apply
-    </button>
-  </div>
+<label [for]="'filter-' + definition().attribute" class="mb-2 block text-xs font-semibold text-black-700">
+  {{ definition().label }}
+</label>
+<div class="flex gap-2">
+  <input
+    #searchInput
+    [id]="'filter-' + definition().attribute"
+    type="text"
+    class="h-9 min-w-0 flex-1 rounded border-black-500 bg-white-50 px-2.5 text-sm placeholder:text-black-600 hover:border-black-50 focus:border-black-50 focus:ring-0"
+    placeholder="e.g.: Ball, Yoga, ..."
+    (keyup.Enter)="applyQuery(searchInput.value)"
+  />
+  <button type="button" class="dcu-button dcu-button-black" (click)="applyQuery(searchInput.value)">
+    Apply
+  </button>
 </div>

@@ -1,36 +1,42 @@
-<div class="flex w-full flex-col h-full">
-  <div class="p-3 bg-gray-100">
-    <div class="container mx-auto">
-      <h3 class="text-2xl">dcupl ng starter - Catalog Example</h3>
-    </div>
+<div class="mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-8 sm:py-10 xl:px-12">
+  <div class="mb-6 sm:mb-8">
+    <h1 class="text-xl font-semibold">Article Catalog</h1>
+    <p class="mt-1 text-sm text-black-600">
+      This starter loads data from a public dcupl starter project. Check it out at
+      <a
+        href="https://console.dcupl.com"
+        target="_blank"
+        rel="noopener"
+        class="border-b border-current text-black-50 transition-colors hover:text-blue-300"
+        >console.dcupl.com</a
+      >.
+    </p>
   </div>
-  <div class="flex h-full container mx-auto pt-8">
-    @if (error(); as message) {
-    <div class="w-full flex flex-col gap-3 justify-center items-center">
-      <h4 class="text-xl">Could not load data</h4>
-      <p class="text-sm text-gray-600">{{ message }}</p>
-      <button
-        type="button"
-        (click)="load()"
-        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-      >
+
+  @if (error(); as message) {
+    <div role="alert" class="max-w-xl rounded-xl border border-red-200 bg-red-100 p-5 sm:p-6">
+      <h2 class="text-base font-semibold">Could not load data</h2>
+      <p class="mt-1 text-sm break-words text-black-700">{{ message }}</p>
+      <button type="button" (click)="load()" class="dcu-button dcu-button-black mt-4">
         Retry
       </button>
     </div>
-    } @else if (list(); as catalogList) {
-    <div class="w-[300px] flex shrink-0 mr-5 pr-5 border-r border-gray-100">
+  } @else if (list(); as catalogList) {
+    <div class="grid items-start gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8">
       <app-filter-bar [list]="catalogList"></app-filter-bar>
-    </div>
-    <div class="w-full h-full overflow-x-hidden">
       <app-product-table
+        class="min-w-0"
         [list]="catalogList"
         [visibleColumns]="visibleColumns()"
       ></app-product-table>
     </div>
-    } @else {
-    <div class="w-full flex justify-center items-center">
-      <h4 class="text-xl">Loading Data</h4>
+  } @else {
+    <div
+      role="status"
+      class="flex flex-col items-center justify-center gap-4 rounded-xl border border-black-200 py-24"
+    >
+      <img src="dcupl-logo.svg" alt="" class="h-8 w-auto motion-safe:animate-spin" />
+      <p class="text-sm text-black-600">Loading data</p>
     </div>
-    }
-  </div>
+  }
 </div>

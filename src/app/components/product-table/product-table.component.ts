@@ -22,6 +22,10 @@ export class ProductTableComponent implements OnInit {
   public readonly nextDisabled = computed(
     () => this.start() + this.count() >= (this.meta()?.currentSize ?? 0),
   );
+  public readonly page = computed(() => Math.floor(this.start() / this.count()) + 1);
+  public readonly pageCount = computed(() =>
+    Math.max(1, Math.ceil((this.meta()?.currentSize ?? 0) / this.count())),
+  );
 
   private readonly destroyRef = inject(DestroyRef);
 

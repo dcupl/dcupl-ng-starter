@@ -1,76 +1,75 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-base font-semibold leading-6 text-gray-900">Article Catalog</h1>
-      <p class="mt-2 text-sm text-gray-700">
-        This starter loads data from a public dcupl starter project. <br />
-        Check it out at
-        <a class="underline" target="_blank" href="https://console.dcupl.com"
-          >console.dcupl.com</a
-        >
-      </p>
-    </div>
+<section aria-labelledby="results-title" class="overflow-hidden rounded-xl border border-black-200">
+  <div class="flex h-12 items-center justify-between gap-3 bg-black-100 px-4">
+    <h2 id="results-title" class="text-xs tracking-[0.12em] text-black-700 uppercase">Articles</h2>
+    <p class="text-xs text-black-700 tabular-nums" aria-live="polite">
+      <span class="font-semibold text-black-50">{{ meta()?.currentSize }}</span>
+      / {{ meta()?.initialSize }} results
+    </p>
   </div>
-  <div class="mt-8 flow-root">
-    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead>
-            <tr>
-              @for (column of visibleColumns(); track $index) {
+
+  @if (data().length) {
+    <div class="overflow-x-auto" role="region" aria-labelledby="results-title" tabindex="0">
+      <table class="w-full border-separate border-spacing-0 text-sm">
+        <thead>
+          <tr>
+            @for (column of visibleColumns(); track $index) {
               <th
                 scope="col"
-                class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="border-b border-black-200 px-4 py-2.5 text-left text-xs font-normal tracking-wide whitespace-nowrap text-black-600"
               >
                 {{ column }}
               </th>
-              }
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            @for (item of data(); track item.key) {
-            <tr>
-              @for (column of visibleColumns(); track $index) {
-              <td
-                class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0"
-              >
-                {{ getCellValue(item, column) }}
-              </td>
-              }
-            </tr>
             }
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody class="tabular-nums">
+          @for (item of data(); track item.key) {
+            <tr class="odd:bg-black-100">
+              @for (column of visibleColumns(); track $index) {
+                <td class="px-4 py-2.5 whitespace-nowrap">{{ getCellValue(item, column) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
-  </div>
-</div>
-<nav
-  class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
-  aria-label="Pagination"
->
-  <div class="hidden sm:block">
-    <p class="text-sm text-gray-700">
-      <span class="font-medium"
-        >{{ meta()?.currentSize }} / {{ meta()?.initialSize }}</span
-      >
-      results
+  } @else {
+    <div class="m-4 rounded-lg border border-dashed border-black-300 px-6 py-12 text-center">
+      <p class="text-sm font-semibold">No articles match these filters</p>
+      <p class="mt-1 text-sm text-black-600">Change the product name or the color selection.</p>
+    </div>
+  }
+
+  <nav
+    aria-label="Pagination"
+    class="flex items-center justify-between gap-3 border-t border-black-200 px-4 py-3"
+  >
+    <p class="text-sm text-black-600 tabular-nums">
+      Page <span class="font-semibold text-black-50">{{ page() }}</span> of {{ pageCount() }}
     </p>
-  </div>
-  <div class="flex flex-1 justify-between sm:justify-end">
-    <button
-      (click)="previous()"
-      [disabled]="previousDisabled()"
-      class="relative inline-flex items-center disabled:opacity-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-    >
-      Previous
-    </button>
-    <button
-      (click)="next()"
-      [disabled]="nextDisabled()"
-      class="relative ml-3 inline-flex items-center disabled:opacity-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-    >
-      Next
-    </button>
-  </div>
-</nav>
+    <div class="flex gap-2">
+      <button
+        type="button"
+        class="dcu-button dcu-button-outline pl-2"
+        (click)="previous()"
+        [disabled]="previousDisabled()"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true" class="size-4 fill-none stroke-current stroke-[1.5]">
+          <path d="M10 4 6 8l4 4" />
+        </svg>
+        Previous
+      </button>
+      <button
+        type="button"
+        class="dcu-button dcu-button-outline pr-2"
+        (click)="next()"
+        [disabled]="nextDisabled()"
+      >
+        Next
+        <svg viewBox="0 0 16 16" aria-hidden="true" class="size-4 fill-none stroke-current stroke-[1.5]">
+          <path d="m6 4 4 4-4 4" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</section>

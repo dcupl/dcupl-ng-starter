@@ -65,6 +65,24 @@ describe('ProductTableComponent', () => {
     expect(component.previousDisabled()).toBe(true);
   });
 
+  it('reports the current page and the page count', () => {
+    const { component, resultChanged } = setup(25);
+    expect(component.page()).toBe(1);
+    expect(component.pageCount()).toBe(3);
+
+    component.next();
+    resultChanged();
+
+    expect(component.page()).toBe(2);
+  });
+
+  it('counts one page when nothing matches', () => {
+    const { component } = setup(0);
+
+    expect(component.page()).toBe(1);
+    expect(component.pageCount()).toBe(1);
+  });
+
   it('disables next on the last page', () => {
     const { component } = setup(8);
 
