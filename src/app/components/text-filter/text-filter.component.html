@@ -1,4 +1,4 @@
-<label [for]="'filter-' + definition().attribute" class="mb-2 block text-xs font-semibold text-black-700">
+<label [for]="'filter-' + definition().attribute" class="mb-2 block text-xs font-semibold text-dcu-black-700">
   {{ definition().label }}
 </label>
 <div class="flex gap-2">
@@ -6,7 +6,7 @@
     #searchInput
     [id]="'filter-' + definition().attribute"
     type="text"
-    class="h-9 min-w-0 flex-1 rounded border-black-500 bg-white-50 px-2.5 text-base placeholder:text-black-600 hover:border-black-50 focus:border-black-50 focus:ring-0 sm:text-sm"
+    class="h-9 min-w-0 flex-1 rounded border-dcu-black-500 bg-dcu-white-50 px-2.5 text-base placeholder:text-dcu-black-600 hover:border-dcu-black-50 focus:border-dcu-black-50 focus:ring-0 sm:text-sm"
     placeholder="e.g.: Ball, Yoga, ..."
     (keyup.Enter)="applyQuery(searchInput.value)"
   />
