@@ -75,11 +75,11 @@
 /* Buttons and chips, named like their console counterparts (theme/buttons.scss, theme/tags.scss) */
 @layer components {
   .dcu-button {
-    @apply inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded border px-3 text-sm whitespace-nowrap transition-colors duration-200 disabled:cursor-not-allowed;
+    @apply inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded border px-3 text-base leading-5 whitespace-nowrap transition-colors duration-200 disabled:cursor-not-allowed;
   }
 
   .dcu-button-black {
-    @apply border-transparent bg-black-50 text-white-50 hover:bg-black-700 disabled:bg-black-500;
+    @apply border-transparent bg-black-50 text-white-50 hover:bg-black-600 disabled:bg-black-500;
   }
 
   .dcu-button-outline {

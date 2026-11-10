@@ -1,13 +1,13 @@
 <aside aria-labelledby="filters-title" class="overflow-hidden rounded-xl border border-black-200">
   <h2
     id="filters-title"
-    class="flex h-12 items-center bg-black-100 px-4 text-xs tracking-[0.12em] text-black-700 uppercase"
+    class="flex h-14 items-center bg-black-100 px-4 text-xs tracking-[0.12em] sm:px-6 text-black-700 uppercase"
   >
     Filters
   </h2>
   <div class="divide-y divide-black-200">
     @for (definition of filterDefinitions; track definition.attribute) {
-      <div class="p-4">
+      <div class="p-4 sm:p-6">
         @if (definition.type === 'text') {
           <app-text-filter [list]="list()" [definition]="definition"></app-text-filter>
         } @else if (definition.type === 'checkbox') {
