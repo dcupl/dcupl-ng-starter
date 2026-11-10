@@ -22,7 +22,6 @@ export type FilterDefinition = {
 @Component({
   selector: 'app-filter-bar',
   templateUrl: './filter-bar.component.html',
-  styleUrls: ['./filter-bar.component.css'],
   imports: [TextFilterComponent, CheckboxFilterComponent],
 })
 export class FilterBarComponent {

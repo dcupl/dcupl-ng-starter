@@ -6,7 +6,7 @@ import { FilterDefinition, startAtFirstPage } from '../filter-bar/filter-bar.com
 @Component({
   selector: 'app-checkbox-filter',
   templateUrl: './checkbox-filter.component.html',
-  styleUrls: ['./checkbox-filter.component.css'],
+  host: { class: 'block' },
 })
 export class CheckboxFilterComponent implements OnInit {
   public readonly list = input.required<DcuplList>();

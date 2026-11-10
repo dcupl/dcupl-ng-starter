@@ -9,7 +9,6 @@ const PAGE_SIZE = 10;
 @Component({
   selector: 'app-page-catalog',
   templateUrl: './page-catalog.component.html',
-  styleUrls: ['./page-catalog.component.css'],
   imports: [ProductTableComponent, FilterBarComponent],
 })
 export class PageCatalogComponent implements OnInit {

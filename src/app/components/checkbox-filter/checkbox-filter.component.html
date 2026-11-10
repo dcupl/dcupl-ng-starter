@@ -4,7 +4,7 @@
     <span class="font-normal text-dcu-black-600">({{ facets().length }})</span>
   </legend>
   <ul class="-mx-2 max-h-60 overflow-y-auto lg:max-h-96">
-    @for (facet of facets(); track $index) {
+    @for (facet of facets(); track facet.key) {
       <li>
         <label
           [for]="definition().attribute + '-' + $index"

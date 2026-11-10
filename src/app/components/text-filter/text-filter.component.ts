@@ -6,7 +6,6 @@ import { FilterDefinition, startAtFirstPage } from '../filter-bar/filter-bar.com
 @Component({
   selector: 'app-text-filter',
   templateUrl: './text-filter.component.html',
-  styleUrls: ['./text-filter.component.css'],
 })
 export class TextFilterComponent {
   public readonly list = input.required<DcuplList>();
@@ -22,7 +21,7 @@ export class TextFilterComponent {
     this.list().catalog.query.setCondition({
       attribute,
       operator: 'find',
-      value: `/${escapeRegExp(queryValue.toLowerCase())}/`,
+      value: `/${escapeRegExp(queryValue)}/`,
       options: { transform: ['lowercase'] },
     });
   }
