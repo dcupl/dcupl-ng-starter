@@ -25,7 +25,7 @@ Then open `http://localhost:4200/`. The Angular CLI ships with the project, so `
 Point the starter at your own console project and model in four places:
 
 1. **Project:** `src/app/services/dcupl.service.ts`. Replace `projectId` and `apiKey` in `new Dcupl({ config })` with your project's values from the [dcupl Console](https://console.dcupl.com). `applicationKey: 'default'` picks the loader configuration to load.
-2. **Model:** `src/app/pages/page-catalog/page-catalog.component.ts`. Set `modelKey` in `dcupl.lists.create()` to your model. The `projection` right below resolves the `vendorId` reference for the table; name your own references there, or drop it. `PAGE_SIZE` sits at the top of the file.
+2. **Model:** `src/app/pages/page-catalog/page-catalog.component.ts`. Set `modelKey` in `dcupl.lists.create()` to your model. The `projection` right below resolves the `vendorId` reference for the table; name your own references there, or drop it. `PAGE_SIZE` is in `src/app/paging.ts`.
 3. **Filters:** `filterDefinitions` in `src/app/components/filter-bar/filter-bar.component.ts`. One entry per filter: the `attribute`, a `label` and a `type`, either `'text'` (search within the attribute) or `'checkbox'` (one checkbox per value, with facet counts).
 4. **Columns:** `columns` in `src/app/components/product-table/product-table.component.ts`. Each column has a header `label` and a `value` accessor; a missing value renders "—". Adjust the `Article` type above the component to your item shape, and the empty-state text in `product-table.component.html` to your filters.
 

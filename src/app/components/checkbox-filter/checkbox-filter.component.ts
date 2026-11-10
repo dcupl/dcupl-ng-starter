@@ -1,7 +1,8 @@
 import { Component, DestroyRef, OnInit, inject, input, signal } from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { DcuplFacet } from '@dcupl/common';
-import { FilterDefinition, startAtFirstPage } from '../filter-bar/filter-bar.component';
+import { FilterDefinition } from '../../filters';
+import { startAtFirstPage } from '../../paging';
 
 @Component({
   selector: 'app-checkbox-filter',

@@ -1,7 +1,8 @@
 import { Component, input } from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { escapeRegExp } from '@dcupl/common';
-import { FilterDefinition, startAtFirstPage } from '../filter-bar/filter-bar.component';
+import { FilterDefinition } from '../../filters';
+import { startAtFirstPage } from '../../paging';
 
 @Component({
   selector: 'app-text-filter',

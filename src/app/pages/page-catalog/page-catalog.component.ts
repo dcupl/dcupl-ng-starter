@@ -3,8 +3,7 @@ import { DcuplList } from '@dcupl/core';
 import { DcuplService } from '../../services/dcupl.service';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { FilterBarComponent } from '../../components/filter-bar/filter-bar.component';
-
-const PAGE_SIZE = 10;
+import { PAGE_SIZE } from '../../paging';
 
 @Component({
   selector: 'app-page-catalog',
