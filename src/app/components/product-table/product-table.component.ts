@@ -2,8 +2,6 @@ import { Component, DestroyRef, OnInit, computed, inject, input, signal } from '
 import { ListItem, ListMetadata } from '@dcupl/common';
 import { DcuplList } from '@dcupl/core';
 
-const PAGE_SIZE = 10;
-
 /** An article as the list returns it: the projection resolves the vendor reference to its fields. */
 type Article = ListItem & {
   productName?: string;
@@ -45,8 +43,10 @@ export class ProductTableComponent implements OnInit {
   public readonly data = signal<Article[]>([]);
   public readonly meta = signal<ListMetadata | undefined>(undefined);
 
+  // the page lives in the list's query: page-catalog sets count, next() and previous() move start,
+  // the filters reset start; without a count the whole result is one page
   private readonly start = computed(() => this.meta()?.appliedQuery?.start ?? 0);
-  private readonly count = computed(() => this.meta()?.appliedQuery?.count ?? PAGE_SIZE);
+  private readonly count = computed(() => this.meta()?.appliedQuery?.count ?? Infinity);
   public readonly previousDisabled = computed(() => this.start() <= 0);
   public readonly nextDisabled = computed(
     () => this.start() + this.count() >= (this.meta()?.currentSize ?? 0),
@@ -59,24 +59,12 @@ export class ProductTableComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    this.resetPaging();
-    this.queryData();
-    const unsubscribe = this.list().onResultChange(() => {
-      this.queryData();
-      // the next filter change starts again at the first page
-      this.resetPaging();
-    });
+    this.readPage();
+    const unsubscribe = this.list().onResultChange(() => this.readPage());
     this.destroyRef.onDestroy(unsubscribe);
   }
 
-  private resetPaging(): void {
-    this.list().catalog.query.applyOptions(
-      { start: 0, count: PAGE_SIZE, projection: { $: true, vendorId: { $: true } } },
-      { skipProcessing: true },
-    );
-  }
-
-  private queryData(): void {
+  private readPage(): void {
     this.data.set(this.list().catalog.query.items<Article>());
     this.meta.set(this.list().catalog.fn.metadata());
   }

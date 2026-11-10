@@ -3,6 +3,14 @@ import { DcuplList } from '@dcupl/core';
 import { TextFilterComponent } from '../text-filter/text-filter.component';
 import { CheckboxFilterComponent } from '../checkbox-filter/checkbox-filter.component';
 
+/**
+ * Call before a filter changes the list's conditions, so the new result starts at page 1.
+ * skipProcessing only stores start; the condition change right after it recomputes the result once.
+ */
+export function startAtFirstPage(list: DcuplList): void {
+  list.catalog.query.applyOptions({ start: 0 }, { skipProcessing: true });
+}
+
 export type FilterDefinitionType = 'text' | 'checkbox';
 
 export type FilterDefinition = {

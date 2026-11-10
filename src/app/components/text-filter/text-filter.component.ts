@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { escapeRegExp } from '@dcupl/common';
-import { FilterDefinition } from '../filter-bar/filter-bar.component';
+import { FilterDefinition, startAtFirstPage } from '../filter-bar/filter-bar.component';
 
 @Component({
   selector: 'app-text-filter',
@@ -14,6 +14,7 @@ export class TextFilterComponent {
 
   public applyQuery(queryValue: string): void {
     const { attribute } = this.definition();
+    startAtFirstPage(this.list());
     if (!queryValue) {
       this.list().catalog.query.removeGroup(attribute);
       return;

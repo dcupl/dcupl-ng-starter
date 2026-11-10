@@ -1,7 +1,7 @@
 import { Component, DestroyRef, OnInit, inject, input, signal } from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { DcuplFacet } from '@dcupl/common';
-import { FilterDefinition } from '../filter-bar/filter-bar.component';
+import { FilterDefinition, startAtFirstPage } from '../filter-bar/filter-bar.component';
 
 @Component({
   selector: 'app-checkbox-filter',
@@ -36,6 +36,7 @@ export class CheckboxFilterComponent implements OnInit {
       operator: 'eq' as const,
       value: item.value,
     };
+    startAtFirstPage(this.list());
     if (item.selected) {
       this.list().catalog.query.removeCondition(condition);
     } else {

@@ -4,6 +4,8 @@ import { DcuplService } from '../../services/dcupl.service';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { FilterBarComponent } from '../../components/filter-bar/filter-bar.component';
 
+const PAGE_SIZE = 10;
+
 @Component({
   selector: 'app-page-catalog',
   templateUrl: './page-catalog.component.html',
@@ -36,7 +38,14 @@ export class PageCatalogComponent implements OnInit {
       if (this.destroyed) {
         return;
       }
-      this.list.set(dcupl.lists.create({ modelKey: 'Article' }));
+      const list = dcupl.lists.create({ modelKey: 'Article' });
+      list.catalog.query.applyOptions({
+        start: 0,
+        count: PAGE_SIZE,
+        // all article properties, plus the vendor reference resolved to its own properties
+        projection: { $: true, vendorId: { $: true } },
+      });
+      this.list.set(list);
     } catch (err) {
       this.error.set(err instanceof Error ? err.message : String(err));
     }
