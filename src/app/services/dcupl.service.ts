@@ -8,9 +8,12 @@ import { DcuplAppLoader } from '@dcupl/loader';
 export class DcuplService {
   private ready?: Promise<Dcupl>;
 
-  /** Creates the instance, loads the console project and runs init() once. */
+  /** Creates the instance, loads the console project and runs init() once. A failed load is retried on the next call. */
   public init(): Promise<Dcupl> {
-    this.ready ??= this.load();
+    this.ready ??= this.load().catch((err: unknown) => {
+      this.ready = undefined;
+      throw err;
+    });
     return this.ready;
   }
 

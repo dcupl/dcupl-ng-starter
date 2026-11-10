@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { DcuplList } from '@dcupl/core';
 import { DcuplService } from '../../services/dcupl.service';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
@@ -12,16 +12,38 @@ import { FilterBarComponent } from '../../components/filter-bar/filter-bar.compo
 })
 export class PageCatalogComponent implements OnInit {
   private readonly dcuplService = inject(DcuplService);
+  private destroyed = false;
 
   public readonly list = signal<DcuplList | undefined>(undefined);
   public readonly visibleColumns = signal<string[]>([]);
+  public readonly error = signal<string | undefined>(undefined);
 
-  async ngOnInit(): Promise<void> {
-    const dcupl = await this.dcuplService.init();
-    const list = dcupl.lists.create({ modelKey: 'Article' });
-    const meta = list.catalog.fn.metadata();
+  constructor() {
+    // a list lives until it is destroyed: free it when the page goes away
+    inject(DestroyRef).onDestroy(() => {
+      this.destroyed = true;
+      this.list()?.destroy();
+    });
+  }
 
-    this.visibleColumns.set(['key', ...meta.attributes.map((attr) => attr.key)]);
-    this.list.set(list);
+  ngOnInit(): void {
+    void this.load();
+  }
+
+  public async load(): Promise<void> {
+    this.error.set(undefined);
+    try {
+      const dcupl = await this.dcuplService.init();
+      if (this.destroyed) {
+        return;
+      }
+      const list = dcupl.lists.create({ modelKey: 'Article' });
+      const meta = list.catalog.fn.metadata();
+
+      this.visibleColumns.set(['key', ...meta.attributes.map((attr) => attr.key)]);
+      this.list.set(list);
+    } catch (err) {
+      this.error.set(err instanceof Error ? err.message : String(err));
+    }
   }
 }
