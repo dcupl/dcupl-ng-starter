@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            @for (item of data(); track $index) {
+            @for (item of data(); track item.key) {
             <tr>
               @for (column of visibleColumns(); track $index) {
               <td

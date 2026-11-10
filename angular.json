@@ -20,7 +20,6 @@
             "outputPath": "dist/dcupl-ng-starter",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
