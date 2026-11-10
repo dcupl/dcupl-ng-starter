@@ -21,6 +21,14 @@ To load data from the dcupl CDN, open the `dcupl.service.ts` file. You’ll find
 * [dcupl Docs](https://docs.dcupl.com)
 * [dcupl.com](https://dcupl.com)
 
+## Look and Feel
+
+The screen uses the look of the dcupl console, built with Tailwind CSS only:
+
+* `src/styles.css` holds the console palette as Tailwind theme tokens (`black-*` and `white-*` are alpha scales, plus `blue`, `yellow`, `green`, `red`), the focus ring and five small classes named like their console counterparts (`dcu-button`, `dcu-button-black`, `dcu-button-outline`, `dcu-button-clear`, `dcu-tag`).
+* The font is [Inter](https://rsms.me/inter/), self-hosted from the `@fontsource-variable/inter` package, as an open-source stand-in for the console font.
+* Everything else is Tailwind utilities in the component templates.
+
 # Angular Readme Part
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) 18 and updated to Angular 22 (zoneless) with dcupl SDK 2.1.
